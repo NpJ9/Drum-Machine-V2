@@ -1,0 +1,27 @@
+.play {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 5%;
+  background-color: #393e46;
+  transition: ease-in-out 100ms;
+}
+
+.play:hover {
+  width: 6rem;
+  height: 6rem;
+  background-color: #8f939b;
+  cursor: pointer;
+}
+
+.play:active {
+  width: 7rem;
+  height: 7rem;
+  background-color: #8da8de;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10rem;
+}
