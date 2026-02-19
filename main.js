@@ -1,19 +1,22 @@
 import { startSequencer } from "./sequencer.js";
-import { loadKit, playSound, audioCtx } from "./audioEngine.js";
-import { pattern } from "./pattern.js";
-import { generateSequencer, makeTheButtons, playHead } from "./ui.js";
+import { loadKit, audioCtx } from "./audioEngine.js";
+import { displayPattern } from "./pattern.js";
+import { generateSequencer, makeTheButtons, createStopButton } from "./ui.js";
 await loadKit();
 
 const playButton = document.getElementById("play");
-// const stopButton = document.getElementById("stop");
+const test = document.getElementById("test");
 
 generateSequencer();
 makeTheButtons();
+createStopButton();
 
 playButton.addEventListener("click", (e) => {
   audioCtx.resume();
   startSequencer();
+});
 
-  // console.log(pattern.kick, pattern.hat, pattern.clap);
-  // console.log("rows are ", rows);
+// Debug/Test for pattern
+test.addEventListener("click", (e) => {
+  displayPattern();
 });

@@ -1,6 +1,6 @@
 import { pattern } from "./pattern.js";
 import { playSound } from "./audioEngine.js";
-import { playHead } from "./ui.js";
+import { playHead, resetPlayHead } from "./ui.js";
 
 let currentStep = 0;
 let bpm = 135;
@@ -14,7 +14,7 @@ function startSequencer() {
   if (isPlaying) {
     clearInterval(intervalid);
     intervalid = null;
-    isPlaying = false;
+    isPlaying = false; // Pause sequencer
     return;
   }
 
@@ -31,7 +31,7 @@ function startSequencer() {
     playHead(buttons, currentStep);
 
     currentStep++;
-    if (currentStep >= 16) currentStep = 0;
+    if (currentStep >= 16) currentStep = 0; // Change 16 to extend bar (maybe link to pattern.length)
   }, interval);
 
   isPlaying = true;
@@ -45,4 +45,12 @@ function playStep() {
   console.log("step: ", currentStep);
 }
 
-export { startSequencer, playStep, currentStep };
+function stopSequencer() {
+  clearInterval(intervalid);
+  intervalid = null;
+  isPlaying = false;
+  currentStep = 0;
+  resetPlayHead();
+  // tell ui that current step for playeahd is 0
+}
+export { startSequencer, playStep, stopSequencer };

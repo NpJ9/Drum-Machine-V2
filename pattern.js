@@ -4,9 +4,11 @@ const pattern = {
   hat: new Array(16).fill(0),
 };
 
-pattern.kick[0] = 1;
-pattern.kick[4] = 1;
-pattern.hat[3] = 1;
-pattern.clap[8] = 1;
+function displayPattern() {
+  console.clear();
+  for (const [key, value] of Object.entries(pattern)) {
+    console.log(`${key}: ${value}`);
+  }
+}
 
-export { pattern };
+export { pattern, displayPattern };

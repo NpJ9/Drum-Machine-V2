@@ -1,7 +1,9 @@
+import { pattern } from "./pattern";
+
 const gridContainer = document.getElementById("grid");
 const play = document.getElementById("play");
 const rows = [4];
-const columns = [16];
+const columns = pattern.kick.length;
 let gridArray = Array.from({ length: rows }, () => Array(columns).fill(null)); // Initialize empty 2D array
 let drumArray = [];
 let loopPlaying = false;
