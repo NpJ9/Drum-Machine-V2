@@ -41,8 +41,7 @@ function playStep() {
   if (pattern.kick[currentStep]) playSound("kick"); // and trigger UI active
   if (pattern.hat[currentStep]) playSound("hat");
   if (pattern.clap[currentStep]) playSound("clap");
-
-  console.log("step: ", currentStep);
+  // console.log("step: ", currentStep);
 }
 
 function stopSequencer() {
@@ -51,6 +50,5 @@ function stopSequencer() {
   isPlaying = false;
   currentStep = 0;
   resetPlayHead();
-  // tell ui that current step for playeahd is 0
 }
 export { startSequencer, playStep, stopSequencer };

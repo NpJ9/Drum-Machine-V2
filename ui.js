@@ -1,18 +1,58 @@
-import { pattern } from "./pattern.js";
+import {
+  pattern,
+  resetPattern,
+  saveToLocalStorage,
+  loadLocalStorage,
+} from "./pattern.js";
 import { stopSequencer } from "./sequencer.js";
 
 const sequencerGrid = document.getElementById("grid");
 const buttonContainer = document.getElementById("button-container");
 
-// Create Stop Button
+// Create Media Control Buttons
+
 function createStopButton() {
   const stopButton = document.createElement("stopButton");
   buttonContainer.appendChild(stopButton);
   stopButton.classList.add("stop-button");
   stopButton.textContent = "Stop";
-
   stopButton.addEventListener("click", (e) => {
     stopSequencer();
+  });
+}
+
+function createSaveButton() {
+  const saveButton = document.createElement("saveButton");
+  buttonContainer.appendChild(saveButton);
+  saveButton.classList.add("stop-button");
+  saveButton.textContent = "save";
+  saveButton.addEventListener("click", (e) => {
+    saveToLocalStorage();
+  });
+}
+
+function createLoadButton() {
+  const loadButton = document.createElement("loadButton");
+  buttonContainer.appendChild(loadButton);
+  loadButton.classList.add("stop-button");
+  loadButton.textContent = "load";
+  loadButton.addEventListener("click", (e) => {
+    loadLocalStorage();
+    loadStoredUI();
+  });
+}
+
+function createResetButton() {
+  const resetButton = document.createElement("resetButton");
+  buttonContainer.append(resetButton);
+  resetButton.classList.add("stop-button");
+  resetButton.textContent = "reset";
+  resetButton.addEventListener("click", () => {
+    const buttons = document.querySelectorAll(".grid-item");
+    buttons.forEach((button) => {
+      button.classList.remove("stepOn");
+    });
+    resetPattern();
   });
 }
 
@@ -42,7 +82,6 @@ function makeTheButtons() {
   const buttons = document.querySelectorAll(".grid-item");
   buttons.forEach((button) => {
     button.addEventListener("click", (e) => {
-      console.log(button.value, "you pressed");
       button.classList.toggle("stepOn");
       if (pattern[button.dataset.type][button.dataset.step]) {
         // Assigns pattern for sequencer
@@ -50,11 +89,10 @@ function makeTheButtons() {
       } else {
         pattern[button.dataset.type][button.dataset.step] = 1;
       }
-
-      console.log(
-        `You made step ${button.dataset.type} ${button.dataset.active} active`,
-      );
-      console.log("Step Index is ", button.dataset.step);
+      // console.log(
+      //   `You made step ${button.dataset.type} ${button.dataset.active} active`,
+      // );
+      // console.log("Step Index is ", button.dataset.step);
     });
   });
 }
@@ -62,6 +100,7 @@ function makeTheButtons() {
 function playHead(buttons, currentStep) {
   buttons.forEach((button) => {
     const step = Number(button.dataset.step);
+
     if (step === currentStep) {
       console.log("I AM ACTIVE STEP:", currentStep);
       button.classList.add("activeStep");
@@ -78,10 +117,26 @@ function resetPlayHead() {
   });
 }
 
+function loadStoredUI() {
+  const buttons = document.querySelectorAll(".grid-item");
+  buttons.forEach((button) => {
+    const type = button.dataset.type;
+    const step = Number(button.dataset.step);
+    if (pattern[type][step] === 1) {
+      button.classList.add("stepOn");
+    } else {
+      button.classList.remove("stepOn");
+    }
+  });
+}
+
 export {
   generateSequencer,
   makeTheButtons,
   playHead,
   resetPlayHead,
   createStopButton,
+  createResetButton,
+  createSaveButton,
+  createLoadButton,
 };

@@ -1,7 +1,14 @@
 import { startSequencer } from "./sequencer.js";
 import { loadKit, audioCtx } from "./audioEngine.js";
 import { displayPattern } from "./pattern.js";
-import { generateSequencer, makeTheButtons, createStopButton } from "./ui.js";
+import {
+  generateSequencer,
+  makeTheButtons,
+  createStopButton,
+  createResetButton,
+  createSaveButton,
+  createLoadButton,
+} from "./ui.js";
 await loadKit();
 
 const playButton = document.getElementById("play");
@@ -10,6 +17,9 @@ const test = document.getElementById("test");
 generateSequencer();
 makeTheButtons();
 createStopButton();
+createResetButton();
+createSaveButton();
+createLoadButton();
 
 playButton.addEventListener("click", (e) => {
   audioCtx.resume();
