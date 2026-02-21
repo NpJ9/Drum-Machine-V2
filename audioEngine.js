@@ -32,12 +32,12 @@ function playSound(name, time = audioCtx.currentTime) {
   const source = audioCtx.createBufferSource(); // Create a sound source node
   source.buffer = buffer; // Attach audio date to the source
 
-  const gainNode = audioCtx.createGain(); // Add volume control
-  gainNode.gain.value = currentVolume;
+  const masterGainNode = audioCtx.createGain(); // Add volume control
+  masterGainNode.gain.value = currentVolume;
   // gainNode.gain.value = volume;
 
-  source.connect(gainNode); // Route sound from soruce to gain node
-  gainNode.connect(audioCtx.destination); //Route sound from gain node to audio output device
+  source.connect(masterGainNode); // Route sound from soruce to gain node
+  masterGainNode.connect(audioCtx.destination); //Route sound from gain node to audio output device
 
   source.start(time); // Play sound
   console.log("is playing");

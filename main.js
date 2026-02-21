@@ -1,6 +1,11 @@
 import { startSequencer } from "./sequencer.js";
 import { loadKit } from "./audioEngine.js";
-import { generateSequencer, makeTheButtons, initControls } from "./ui.js";
+import {
+  generateSequencer,
+  makeTheButtons,
+  initControls,
+  initVolumeSliders,
+} from "./ui.js";
 await loadKit();
 
 document.addEventListener("keydown", (event) => {
@@ -22,3 +27,4 @@ document.addEventListener("keyup", (event) => {
 generateSequencer();
 makeTheButtons();
 initControls();
+initVolumeSliders();

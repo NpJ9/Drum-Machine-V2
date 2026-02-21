@@ -55,8 +55,8 @@ body {
 }
 
 .grid-item {
-  width: 5rem;
-  height: 4rem;
+  width: 3rem;
+  height: 3rem;
   border-radius: 10%;
   border: solid;
   background-color: #393e46;
@@ -64,6 +64,7 @@ body {
 
 .grid-item:hover {
   cursor: pointer;
+  border: 0.2rem solid white;
 }
 
 .grid-item:active {
@@ -131,4 +132,33 @@ body {
   margin-top: 1rem;
   font-size: 2rem;
   text-align: center;
+}
+
+.sequencer-wrapper {
+  display: flex;
+}
+
+.volume-slider-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.instrument-volume-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 1.5rem;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 1%;
+}
+
+.vol-slider-instrument {
+  width: 3rem;
+}
+
+input:hover {
+  cursor: pointer;
 }

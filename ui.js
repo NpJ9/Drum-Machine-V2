@@ -12,24 +12,9 @@ const sequencerGrid = document.getElementById("grid");
 const controlsContainer = document.getElementById("controls-container");
 const bpmInput = document.getElementById("bpm");
 const volumeSlider = document.getElementById("volume");
-
-// Volume Input
-
-volumeSlider.addEventListener("input", function (event) {
-  let volume = Number(this.value) / 100;
-  console.log(`Volume: ${volume}, ${typeof volume} `);
-  updateVolume(volume);
-  // Change volume for all gainNodes in audioEngine
-});
-
-// BPM Input
-
-bpmInput.addEventListener("input", function (event) {
-  let newBpm = Number(bpmInput.value);
-  setBPM(newBpm);
-  console.log(`BPM: ${newBpm}`);
-  console.log(typeof newBpm);
-});
+const instrumentVolumeSliderContainer = document.getElementById(
+  "volume-slider-container ",
+);
 
 // Control Button Config
 
@@ -62,21 +47,82 @@ const controlConfig = [
 
   {
     text: "debug",
-    actions: [displayPattern],
+    actions: [displayPattern, createVolumeSliders],
     className: "control-button",
   },
 ];
+
+// Volume Input
+
+volumeSlider.addEventListener("input", function (event) {
+  let volume = Number(this.value) / 100;
+  console.log(`Volume: ${volume}, ${typeof volume} `);
+  updateVolume(volume);
+  // Change volume for all gainNodes in audioEngine
+});
+
+// BPM Input
+
+bpmInput.addEventListener("input", function (event) {
+  let newBpm = Number(bpmInput.value);
+  setBPM(newBpm);
+  console.log(`BPM: ${newBpm}`);
+  console.log(typeof newBpm);
+});
 
 function createControlButton({ text, className, actions }) {
   const btn = document.createElement("button");
   btn.textContent = text;
   btn.className = className;
-
   btn.addEventListener("click", () => {
     actions.forEach((fn) => fn());
   });
-
   return btn;
+}
+
+function createVolumeSliders({ instrument, instrumentVolume }) {
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("instrument-volume-wrapper");
+
+  const label = document.createElement("label");
+  label.classList.add("instrument-labels");
+  label.textContent = instrument;
+
+  const slider = document.createElement("input");
+  slider.classList.add("vol-slider-instrument");
+  slider.instrument = instrument;
+  slider.instrumentVolume = instrumentVolume;
+  slider.type = "range";
+  slider.min = "0";
+  slider.max = "1";
+  slider.step = "0.1";
+  slider.value = instrumentVolume;
+
+  wrapper.appendChild(label);
+  wrapper.appendChild(slider);
+
+  slider.addEventListener("input", function (event) {
+    console.log(
+      `You changed ${instrument} to ${this.value} from ${instrumentVolume} `,
+
+      // Call a function to change the instruments volume
+      // in audioEngine create gainNodes for each instrument in an object
+      // call a function that updates the values for each instrument
+    );
+  });
+  return wrapper;
+}
+
+function initVolumeSliders() {
+  const instruments = Object.keys(pattern);
+
+  instruments.forEach((instrument) => {
+    const instrumentVolSlider = createVolumeSliders({
+      instrument,
+      instrumentVolume: 0.2,
+    });
+    instrumentVolumeSliderContainer.appendChild(instrumentVolSlider);
+  });
 }
 
 function initControls() {
@@ -92,8 +138,6 @@ function resetUI() {
     button.classList.remove("stepOn");
   });
 }
-
-// BPM Input
 
 // Generate Sequencer Buttons, assign values and indexes
 
@@ -169,10 +213,16 @@ function loadStoredUI() {
   });
 }
 
+// Create Volume sliders for each Instrument
+
+// Create Name tags for each Instrument
+// Create Decay Knob to change Envelope of Sound
+
 export {
   generateSequencer,
   makeTheButtons,
   playHead,
   resetPlayHead,
   initControls,
+  initVolumeSliders,
 };
