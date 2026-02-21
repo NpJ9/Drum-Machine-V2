@@ -1,62 +1,101 @@
 import {
   pattern,
   resetPattern,
+  displayPattern,
   saveToLocalStorage,
   loadLocalStorage,
 } from "./pattern.js";
-import { stopSequencer } from "./sequencer.js";
+import { updateVolume } from "./audioEngine.js";
+import { stopSequencer, startSequencer, setBPM } from "./sequencer.js";
 
 const sequencerGrid = document.getElementById("grid");
-const buttonContainer = document.getElementById("button-container");
+const controlsContainer = document.getElementById("controls-container");
+const bpmInput = document.getElementById("bpm");
+const volumeSlider = document.getElementById("volume");
 
-// Create Media Control Buttons
+// Volume Input
 
-function createStopButton() {
-  const stopButton = document.createElement("stopButton");
-  buttonContainer.appendChild(stopButton);
-  stopButton.classList.add("stop-button");
-  stopButton.textContent = "Stop";
-  stopButton.addEventListener("click", (e) => {
-    stopSequencer();
+volumeSlider.addEventListener("input", function (event) {
+  let volume = Number(this.value) / 100;
+  console.log(`Volume: ${volume}, ${typeof volume} `);
+  updateVolume(volume);
+  // Change volume for all gainNodes in audioEngine
+});
+
+// BPM Input
+
+bpmInput.addEventListener("input", function (event) {
+  let newBpm = Number(bpmInput.value);
+  setBPM(newBpm);
+  console.log(`BPM: ${newBpm}`);
+  console.log(typeof newBpm);
+});
+
+// Control Button Config
+
+const controlConfig = [
+  {
+    text: "play",
+    actions: [startSequencer],
+    className: "control-button",
+  },
+  {
+    text: "stop",
+    actions: [stopSequencer],
+    className: "control-button",
+  },
+  {
+    text: "reset",
+    actions: [resetPattern, resetUI],
+    className: "control-button",
+  },
+  {
+    text: "save",
+    actions: [saveToLocalStorage],
+    className: "control-button",
+  },
+  {
+    text: "load",
+    actions: [loadLocalStorage, loadStoredUI],
+    className: "control-button",
+  },
+
+  {
+    text: "debug",
+    actions: [displayPattern],
+    className: "control-button",
+  },
+];
+
+function createControlButton({ text, className, actions }) {
+  const btn = document.createElement("button");
+  btn.textContent = text;
+  btn.className = className;
+
+  btn.addEventListener("click", () => {
+    actions.forEach((fn) => fn());
+  });
+
+  return btn;
+}
+
+function initControls() {
+  controlConfig.forEach((config) => {
+    const button = createControlButton(config);
+    controlsContainer.appendChild(button);
   });
 }
 
-function createSaveButton() {
-  const saveButton = document.createElement("saveButton");
-  buttonContainer.appendChild(saveButton);
-  saveButton.classList.add("stop-button");
-  saveButton.textContent = "save";
-  saveButton.addEventListener("click", (e) => {
-    saveToLocalStorage();
+function resetUI() {
+  const buttons = document.querySelectorAll(".grid-item");
+  buttons.forEach((button) => {
+    button.classList.remove("stepOn");
   });
 }
 
-function createLoadButton() {
-  const loadButton = document.createElement("loadButton");
-  buttonContainer.appendChild(loadButton);
-  loadButton.classList.add("stop-button");
-  loadButton.textContent = "load";
-  loadButton.addEventListener("click", (e) => {
-    loadLocalStorage();
-    loadStoredUI();
-  });
-}
+// BPM Input
 
-function createResetButton() {
-  const resetButton = document.createElement("resetButton");
-  buttonContainer.append(resetButton);
-  resetButton.classList.add("stop-button");
-  resetButton.textContent = "reset";
-  resetButton.addEventListener("click", () => {
-    const buttons = document.querySelectorAll(".grid-item");
-    buttons.forEach((button) => {
-      button.classList.remove("stepOn");
-    });
-    resetPattern();
-  });
-}
-
-// Generate buttons, assign values and indexes
+// Generate Sequencer Buttons, assign values and indexes
 
 function generateSequencer() {
   console.log("GENERATING GRID");
@@ -83,8 +122,9 @@ function makeTheButtons() {
   buttons.forEach((button) => {
     button.addEventListener("click", (e) => {
       button.classList.toggle("stepOn");
+      // Assigns pattern for sequencer
+
       if (pattern[button.dataset.type][button.dataset.step]) {
-        // Assigns pattern for sequencer
         pattern[button.dataset.type][button.dataset.step] = 0;
       } else {
         pattern[button.dataset.type][button.dataset.step] = 1;
@@ -100,7 +140,6 @@ function makeTheButtons() {
 function playHead(buttons, currentStep) {
   buttons.forEach((button) => {
     const step = Number(button.dataset.step);
-
     if (step === currentStep) {
       console.log("I AM ACTIVE STEP:", currentStep);
       button.classList.add("activeStep");
@@ -135,8 +174,5 @@ export {
   makeTheButtons,
   playHead,
   resetPlayHead,
-  createStopButton,
-  createResetButton,
-  createSaveButton,
-  createLoadButton,
+  initControls,
 };

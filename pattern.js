@@ -1,7 +1,7 @@
 const pattern = {
-  kick: new Array(16).fill(0),
-  clap: new Array(16).fill(0),
   hat: new Array(16).fill(0),
+  clap: new Array(16).fill(0),
+  kick: new Array(16).fill(0),
 };
 
 function displayPattern() {

@@ -1,11 +1,26 @@
 * {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  overflow: hidden;
 }
-.play,
-.test,
-.stop-button {
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #000000;
+}
+
+.controls-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.control-button {
   width: 7rem;
   height: 7rem;
+  font-size: 1.5rem;
   border-radius: 25%;
   border: none;
   background-color: #393e46;
@@ -16,47 +31,32 @@
   align-items: center;
 }
 
-.play:hover,
-.test:hover,
-.stop-button:hover {
+.control-button:hover {
   background-color: #00acb5cd;
   cursor: pointer;
 }
 
-.play:active,
-.test:active,
-.stop-button:active {
+.control-button:active {
   background-color: #00adb5;
   cursor: pointer;
 }
 
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  margin-top: 5rem;
-  height: 100vh;
-  background-color: #000000;
-}
-
-.button-container {
-  display: flex;
-  gap: 2rem;
+.active_state {
+  background-color: #00adb5;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(16, 1fr);
   grid-template-rows: repeat(3, auto);
-  gap: 1.5rem;
+  gap: 2rem;
   border: 0.5rem solid #000000;
   padding: 2rem;
 }
 
 .grid-item {
-  width: 3rem;
-  height: 3rem;
+  width: 5rem;
+  height: 4rem;
   border-radius: 10%;
   border: solid;
   background-color: #393e46;
@@ -81,4 +81,54 @@ body {
 
 .fourth-note {
   border: 0.2rem solid #00acb56d;
+}
+
+.temp-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 10rem;
+}
+
+.inputs-container {
+  width: 10rem;
+  height: 8rem;
+  font-size: 1.5rem;
+  border-radius: 5%;
+  border: none;
+  background-color: #393e46;
+  color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.volume-container {
+  width: 10rem;
+  height: 8rem;
+  font-size: 1.5rem;
+  border-radius: 5%;
+  border: none;
+  background-color: #393e46;
+  transition: ease-in-out 100ms;
+  color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.volume-slider {
+  margin-top: 1rem;
+  font-size: 2rem;
+}
+
+.tempo {
+  background-color: #758283;
+}
+
+.bpm-input {
+  margin-top: 1rem;
+  font-size: 2rem;
+  text-align: center;
 }

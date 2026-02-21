@@ -23,15 +23,18 @@ async function loadKit() {
 }
 
 // Play Sounds
+let currentVolume = 0.15;
 
 function playSound(name, time = audioCtx.currentTime) {
   const buffer = buffers[name]; //Checks buffer to retrieve correct sound
+
   if (!buffer) return;
   const source = audioCtx.createBufferSource(); // Create a sound source node
   source.buffer = buffer; // Attach audio date to the source
 
   const gainNode = audioCtx.createGain(); // Add volume control
-  gainNode.gain.value = 0.2;
+  gainNode.gain.value = currentVolume;
+  // gainNode.gain.value = volume;
 
   source.connect(gainNode); // Route sound from soruce to gain node
   gainNode.connect(audioCtx.destination); //Route sound from gain node to audio output device
@@ -40,4 +43,6 @@ function playSound(name, time = audioCtx.currentTime) {
   console.log("is playing");
 }
 
-export { loadKit, playSound, audioCtx };
+const updateVolume = (volume) => (currentVolume = volume);
+
+export { loadKit, playSound, audioCtx, updateVolume };

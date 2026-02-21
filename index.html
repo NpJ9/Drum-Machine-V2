@@ -7,11 +7,33 @@
     <title>Document</title>
   </head>
   <body>
-    <div id="grid" class="grid"></div>
-    <div class="button-container" id="button-container">
-      <button class="play" id="play">Play/Pause</button>
-      <button class="test" id="test">Debug</button>
+    <div class="temp-wrapper">
+      <div id="inputs-container" class="inputs-container">
+        <label>BPM</label
+        ><input
+          id="bpm"
+          class="bpm-input"
+          type="number"
+          min="40"
+          max="200"
+          value="120"
+        />
+      </div>
+      <div id="volume-container" class="volume-container">
+        <label>Volume</label>
+        <input
+          type="range"
+          min="0"
+          max="25"
+          value="12.5"
+          class="volume-slider"
+          id="volume"
+        />
+      </div>
     </div>
+    <div id="grid" class="grid"></div>
+    <div class="controls-container" id="controls-container"></div>
+
     <script src="main.js" type="module"></script>
   </body>
 </html>

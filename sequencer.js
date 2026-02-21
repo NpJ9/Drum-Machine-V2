@@ -51,4 +51,13 @@ function stopSequencer() {
   currentStep = 0;
   resetPlayHead();
 }
-export { startSequencer, playStep, stopSequencer };
+
+function setBPM(newBpm) {
+  bpm = newBpm;
+  if (isPlaying) {
+    clearInterval(intervalid);
+    startSequencer();
+  }
+}
+
+export { startSequencer, playStep, stopSequencer, setBPM };

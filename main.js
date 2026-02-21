@@ -1,32 +1,24 @@
 import { startSequencer } from "./sequencer.js";
-import { loadKit, audioCtx } from "./audioEngine.js";
-import { displayPattern } from "./pattern.js";
-import {
-  generateSequencer,
-  makeTheButtons,
-  createStopButton,
-  createResetButton,
-  createSaveButton,
-  createLoadButton,
-} from "./ui.js";
+import { loadKit } from "./audioEngine.js";
+import { generateSequencer, makeTheButtons, initControls } from "./ui.js";
 await loadKit();
 
-const playButton = document.getElementById("play");
-const test = document.getElementById("test");
+document.addEventListener("keydown", (event) => {
+  if (event.code === "Space") {
+    startSequencer();
+    console.log("Pressed space");
+    playButton.classList.add("active_state");
+    event.preventDefault(); // Prevent scrolling
+  }
+});
+
+document.addEventListener("keyup", (event) => {
+  if (event.code === "Space") {
+    console.log("released space");
+    playButton.classList.remove("active_state");
+  }
+});
 
 generateSequencer();
 makeTheButtons();
-createStopButton();
-createResetButton();
-createSaveButton();
-createLoadButton();
-
-playButton.addEventListener("click", (e) => {
-  audioCtx.resume();
-  startSequencer();
-});
-
-// Debug/Test for pattern
-test.addEventListener("click", (e) => {
-  displayPattern();
-});
+initControls();
