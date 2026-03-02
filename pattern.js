@@ -1,4 +1,6 @@
 const pattern = {
+  perc: new Array(16).fill(0),
+  hat_2: new Array(16).fill(0),
   hat: new Array(16).fill(0),
   clap: new Array(16).fill(0),
   kick: new Array(16).fill(0),

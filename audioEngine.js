@@ -1,5 +1,6 @@
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 const buffers = {};
+const instrumentGains = {};
 
 // Load single audio files and stores it
 
@@ -18,31 +19,62 @@ async function loadKit() {
     loadSound("kick", "sounds/kick.wav"),
     loadSound("clap", "sounds/clap.wav"),
     loadSound("hat", "sounds/closed_hat.wav"),
+    loadSound("hat_2", "sounds/closed_hat_2.wav"),
+    loadSound("perc", "sounds/perc.wav"),
   ]);
   console.log("kit loaded");
 }
+// initInstrumentGains();
 
 // Play Sounds
 let currentVolume = 0.15;
+const masterGain = audioCtx.createGain();
+masterGain.gain.value = currentVolume;
+masterGain.connect(audioCtx.destination); //Route sound from gain node to audio output device
 
-function playSound(name, time = audioCtx.currentTime) {
-  const buffer = buffers[name]; //Checks buffer to retrieve correct sound
+function initInstrumentGains() {
+  Object.keys(buffers).forEach((name) => {
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.value = 1;
 
-  if (!buffer) return;
-  const source = audioCtx.createBufferSource(); // Create a sound source node
-  source.buffer = buffer; // Attach audio date to the source
-
-  const masterGainNode = audioCtx.createGain(); // Add volume control
-  masterGainNode.gain.value = currentVolume;
-  // gainNode.gain.value = volume;
-
-  source.connect(masterGainNode); // Route sound from soruce to gain node
-  masterGainNode.connect(audioCtx.destination); //Route sound from gain node to audio output device
-
-  source.start(time); // Play sound
-  console.log("is playing");
+    gainNode.connect(masterGain);
+    instrumentGains[name] = gainNode;
+  });
 }
 
-const updateVolume = (volume) => (currentVolume = volume);
+function playSound(name, time = audioCtx.currentTime) {
+  const buffer = buffers[name];
+  const gainNode = instrumentGains[name];
 
-export { loadKit, playSound, audioCtx, updateVolume };
+  if (!buffer || !gainNode) {
+    console.warn("Missing buffer or gain:", name);
+    return;
+  }
+
+  const source = audioCtx.createBufferSource();
+  source.buffer = buffer;
+
+  source.connect(gainNode);
+  source.start(time);
+}
+// Set volume for Instruments
+
+function setInstrumentVolume(name, value) {
+  if (instrumentGains[name]) {
+    instrumentGains[name].gain.value = value;
+    console.log(`Set ${name} volume to ${value}`);
+  }
+}
+const updateVolume = (volume) => {
+  currentVolume = volume;
+  masterGain.gain.value = currentVolume;
+};
+
+export {
+  loadKit,
+  playSound,
+  audioCtx,
+  updateVolume,
+  initInstrumentGains,
+  setInstrumentVolume,
+};

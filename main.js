@@ -1,5 +1,5 @@
 import { startSequencer } from "./sequencer.js";
-import { loadKit } from "./audioEngine.js";
+import { loadKit, initInstrumentGains } from "./audioEngine.js";
 import {
   generateSequencer,
   makeTheButtons,
@@ -7,6 +7,7 @@ import {
   initVolumeSliders,
 } from "./ui.js";
 await loadKit();
+initInstrumentGains();
 
 document.addEventListener("keydown", (event) => {
   if (event.code === "Space") {

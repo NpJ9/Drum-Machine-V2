@@ -41,6 +41,8 @@ function playStep() {
   if (pattern.kick[currentStep]) playSound("kick"); // and trigger UI active
   if (pattern.hat[currentStep]) playSound("hat");
   if (pattern.clap[currentStep]) playSound("clap");
+  if (pattern.hat_2[currentStep]) playSound("hat_2");
+  if (pattern.perc[currentStep]) playSound("perc");
   // console.log("step: ", currentStep);
 }
 

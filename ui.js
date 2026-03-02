@@ -5,7 +5,7 @@ import {
   saveToLocalStorage,
   loadLocalStorage,
 } from "./pattern.js";
-import { updateVolume } from "./audioEngine.js";
+import { updateVolume, setInstrumentVolume } from "./audioEngine.js";
 import { stopSequencer, startSequencer, setBPM } from "./sequencer.js";
 
 const sequencerGrid = document.getElementById("grid");
@@ -102,13 +102,8 @@ function createVolumeSliders({ instrument, instrumentVolume }) {
   wrapper.appendChild(slider);
 
   slider.addEventListener("input", function (event) {
-    console.log(
-      `You changed ${instrument} to ${this.value} from ${instrumentVolume} `,
-
-      // Call a function to change the instruments volume
-      // in audioEngine create gainNodes for each instrument in an object
-      // call a function that updates the values for each instrument
-    );
+    // Take input of slider
+    setInstrumentVolume(instrument, this.value);
   });
   return wrapper;
 }
@@ -119,7 +114,7 @@ function initVolumeSliders() {
   instruments.forEach((instrument) => {
     const instrumentVolSlider = createVolumeSliders({
       instrument,
-      instrumentVolume: 0.2,
+      instrumentVolume: 1,
     });
     instrumentVolumeSliderContainer.appendChild(instrumentVolSlider);
   });
@@ -167,16 +162,11 @@ function makeTheButtons() {
     button.addEventListener("click", (e) => {
       button.classList.toggle("stepOn");
       // Assigns pattern for sequencer
-
       if (pattern[button.dataset.type][button.dataset.step]) {
         pattern[button.dataset.type][button.dataset.step] = 0;
       } else {
         pattern[button.dataset.type][button.dataset.step] = 1;
       }
-      // console.log(
-      //   `You made step ${button.dataset.type} ${button.dataset.active} active`,
-      // );
-      // console.log("Step Index is ", button.dataset.step);
     });
   });
 }
@@ -212,8 +202,6 @@ function loadStoredUI() {
     }
   });
 }
-
-// Create Volume sliders for each Instrument
 
 // Create Name tags for each Instrument
 // Create Decay Knob to change Envelope of Sound
