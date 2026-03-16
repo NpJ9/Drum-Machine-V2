@@ -1,5 +1,5 @@
 import { pattern } from "./pattern.js";
-import { playSound } from "./audioEngine.js";
+import { playSound, audioCtx } from "./audioEngine.js";
 import { playHead, resetPlayHead } from "./ui.js";
 
 let currentStep = 0;
@@ -37,13 +37,21 @@ function startSequencer() {
   isPlaying = true;
 }
 
+// function playStep() {
+//   if (pattern.kick[currentStep]) playSound("kick"); // and trigger UI active
+//   if (pattern.hat[currentStep]) playSound("hat");
+//   if (pattern.clap[currentStep]) playSound("clap");
+//   if (pattern.hat_2[currentStep]) playSound("hat_2");
+//   if (pattern.perc[currentStep]) playSound("perc");
+//   // console.log("step: ", currentStep);
+// }
+
 function playStep() {
-  if (pattern.kick[currentStep]) playSound("kick"); // and trigger UI active
-  if (pattern.hat[currentStep]) playSound("hat");
-  if (pattern.clap[currentStep]) playSound("clap");
-  if (pattern.hat_2[currentStep]) playSound("hat_2");
-  if (pattern.perc[currentStep]) playSound("perc");
-  // console.log("step: ", currentStep);
+  Object.keys(pattern).forEach((instrument) => {
+    const step = pattern[instrument][currentStep];
+    if (step.active)
+      playSound(instrument, audioCtx.currentTime, step.velocity / 100);
+  });
 }
 
 function stopSequencer() {

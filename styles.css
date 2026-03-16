@@ -1,6 +1,5 @@
 * {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  overflow: hidden;
 }
 
 body {
@@ -10,11 +9,15 @@ body {
   flex-direction: column;
   height: 100vh;
   background-color: #000000;
+  overflow: hidden;
 }
 
 .controls-container {
   display: flex;
   gap: 2rem;
+}
+#velocity-container {
+  width: 100%; /* make sure it spans full grid width */
 }
 
 .control-button {
@@ -44,14 +47,17 @@ body {
 .active_state {
   background-color: #00adb5;
 }
+.grid-and-velocity {
+  display: flex;
+  flex-direction: column;
+}
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(16, 1fr);
-  grid-template-rows: repeat(3, auto);
+  grid-template-columns: repeat(16, 3rem);
   gap: 2rem;
-  border: 0.5rem solid #000000;
   padding: 2rem;
+  background-color: #393e4600;
 }
 
 .grid-item {
@@ -119,9 +125,10 @@ body {
   flex-direction: column;
 }
 
-.volume-slider {
-  margin-top: 1rem;
-  font-size: 2rem;
+.Volume-label {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
 }
 
 .tempo {
@@ -136,29 +143,245 @@ body {
 
 .sequencer-wrapper {
   display: flex;
+  align-items: flex-start; /* add this — stops vertical stretching */
 }
 
-.volume-slider-container {
+.instrument-wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  gap: 2rem;
+  padding: 2rem 0;
 }
 
 .instrument-volume-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  font-size: 1.5rem;
+  gap: 0.5rem;
+  height: 3rem;
+  font-size: 0.85rem;
   color: white;
-  padding: 0.5rem;
-  border-radius: 1%;
-}
-
-.vol-slider-instrument {
-  width: 3rem;
 }
 
 input:hover {
   cursor: pointer;
+}
+
+.knob {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #4a4a4a, #1a1a1a);
+  border: 2px solid #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  cursor: grab;
+  user-select: none;
+  position: relative;
+}
+
+/* The indicator dot */
+.knob::after {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  background: #ff6b35;
+  border-radius: 50%;
+}
+
+.knob:active {
+  cursor: grabbing;
+}
+
+.knob-label {
+  font-size: 11px;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Fixed position = stays put when user scrolls */
+/* z-index: -1 = sits behind all your page content */
+/* #vanta-bg {
+  position: fixed;
+  top: 2;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+} */
+
+.velocity-container {
+  display: flex;
+  padding: 0 2rem; /* match grid's left/right padding */
+  gap: 2rem; /* match grid's gap */
+  height: 80px;
+  align-items: flex-end;
+}
+
+.velocity-panel {
+  display: none;
+  width: 100%;
+  height: 100%;
+  gap: 2rem; /* match grid's gap */
+  align-items: flex-end;
+}
+
+.velocity-panel.active {
+  display: flex;
+}
+
+.velocity-panel.active {
+  display: flex;
+}
+
+.vel-bar-wrap {
+  width: 3rem;
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  cursor: ns-resize;
+  background: #1a1a1a;
+  border-radius: 2px;
+}
+
+.vel-bar {
+  width: 100%;
+  background: #00e5ff;
+  border-radius: 2px 2px 0 0;
+  min-height: 4px;
+}
+
+.vel-bar-wrap {
+  width: 3rem; /* match grid-item width */
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  cursor: ns-resize;
+  background: #1a1a1a;
+  border-radius: 2px;
+}
+
+.vel-bar--inactive {
+  background: #333;
+}
+
+#instrument-tabs {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem;
+  margin-right: 10rem;
+}
+
+.vel-tab {
+  padding: 4px 10px;
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: #888;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.vel-tab.active {
+  background: #00e5ff22;
+  border-color: #00e5ff;
+  color: #00e5ff;
+}
+
+.side-column {
+  margin-top: -2rem;
+}
+
+.column-header {
+  font-size: 0.7rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-align: center;
+  height: 2rem; /* matches grid's top padding so knobs start at same Y */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.label-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: space-evenly;
+  gap: 1rem;
+  margin-right: 2rem;
+}
+
+.mute-btn {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: #888;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 2px 5px;
+  line-height: 1;
+  font-weight: bold;
+}
+
+.mute-btn:hover {
+  background: #393e46;
+  color: white;
+}
+
+.mute-btn.muted {
+  background: #7a1a1a;
+  border-color: #cc3333;
+  color: #ff6666;
+}
+
+.oscilloscope {
+  background: #0a0a0a;
+  border: 1px solid #3ba1a1;
+  border-radius: 4px;
+  align-self: center;
+  margin-left: 1rem;
+  margin-bottom: 10rem;
+}
+
+.sound-cycle-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.sound-cycle-btn {
+  background: #2a2a2a;
+  border: 1px solid #444;
+  color: #aaa;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  padding: 2px 5px;
+  line-height: 1;
+}
+
+.sound-cycle-btn:hover:not(:disabled) {
+  background: #393e46;
+  color: white;
+}
+
+.sound-cycle-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.sound-name-display {
+  font-size: 0.7rem;
+  color: #00e5ff;
+  min-width: 3.5rem;
+  text-align: center;
 }

@@ -4,9 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="styles.css" rel="stylesheet" />
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.dots.min.js"></script> -->
+
     <title>Document</title>
   </head>
   <body>
+    <!-- <div id="vanta-bg"></div> -->
+    <!-- <div id="knob-container" class="knob-container"></div> -->
     <div class="temp-wrapper">
       <div id="inputs-container" class="inputs-container">
         <label>BPM</label
@@ -19,23 +24,42 @@
           value="120"
         />
       </div>
+
       <div id="volume-container" class="volume-container">
-        <label>Volume</label>
-        <input
-          type="range"
-          min="0"
-          max="25"
-          value="12.5"
-          class="volume-slider"
-          id="volume"
-        />
+        <label class="Volume-label">Volume</label>
       </div>
     </div>
 
     <div class="sequencer-wrapper">
-      <div id="volume-slider-container " class="volume-slider-container"></div>
+      <div class="side-column">
+        <div class="label-wrapper">
+          <span class="column-header">Volume</span>
+          <span class="column-header">Decay</span>
+        </div>
+
+        <div id="instrument-wrapper" class="instrument-wrapper"></div>
+      </div>
+      <div class="grid-and-velocity">
+        <div id="grid" class="grid"></div>
+        <div id="velocity-container" class="velocity-container"></div>
+        <div id="instrument-tabs"></div>
+      </div>
+      <canvas
+        id="oscilloscope"
+        class="oscilloscope"
+        width="140"
+        height="300"
+      ></canvas>
+    </div>
+    <!-- 
+    <div class="sequencer-wrapper">
+      <div id="volume-slider-container" class="volume-slider-container"></div>
+      <div id="knob-container" class="knob-container"></div>
       <div id="grid" class="grid"></div>
     </div>
+
+    <div id="velocity-container" class="velocity-container"></div>
+    <div id="instrument-tabs"></div> -->
 
     <div class="controls-container" id="controls-container"></div>
 

@@ -1,9 +1,9 @@
 const pattern = {
-  perc: new Array(16).fill(0),
-  hat_2: new Array(16).fill(0),
-  hat: new Array(16).fill(0),
-  clap: new Array(16).fill(0),
-  kick: new Array(16).fill(0),
+  perc: new Array(16).fill(null).map(() => ({ active: 0, velocity: 100 })),
+  hat_2: new Array(16).fill(null).map(() => ({ active: 0, velocity: 100 })),
+  hat: new Array(16).fill(null).map(() => ({ active: 0, velocity: 100 })),
+  clap: new Array(16).fill(null).map(() => ({ active: 0, velocity: 100 })),
+  kick: new Array(16).fill(null).map(() => ({ active: 0, velocity: 100 })),
 };
 
 function displayPattern() {
@@ -13,11 +13,22 @@ function displayPattern() {
   }
 }
 
+// function resetPattern() {
+//   Object.keys(pattern).forEach((instrument) => {
+//     pattern[instrument].fill(0);
+//   });
+// }
+
 function resetPattern() {
   Object.keys(pattern).forEach((instrument) => {
-    pattern[instrument].fill(0);
+    pattern[instrument].forEach((step) => {
+      step.active = 0;
+      step.velocity = 100;
+    });
   });
 }
+
+// NEED TO FIND A WAY TO SAVE AND LOAD INSTURMENT VOLUMES AS WELL AS PATTERN DATA
 
 function saveToLocalStorage() {
   localStorage.setItem("pattern", JSON.stringify(pattern));
